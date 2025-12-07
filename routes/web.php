@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\authController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
@@ -37,4 +38,16 @@ Route::middleware('auth')->group(function () {
 
     // Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+
+    // Update basic profile (name, country, mobile) – require transaction password
+    Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
+
+    // Change login password
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Change email – require transaction password
+    Route::post('/profile/email', [ProfileController::class, 'updateEmail'])->name('profile.email');
 });

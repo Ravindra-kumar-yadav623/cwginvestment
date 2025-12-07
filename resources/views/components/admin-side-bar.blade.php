@@ -33,7 +33,7 @@
             <div class="collapse" id="dashboard">
               <ul class="nav nav-collapse">
                 <li>
-                  <a href="index.php">
+                  <a href="{{ route('dashboard') }}">
                     <span class="sub-item">Dashboard</span>
                   </a>
                 </li>
@@ -454,7 +454,7 @@
                     <div class="u-text">
                       <h4>Pramod Gupta</h4>
                       <p class="text-muted">pramod@gmail.com</p>
-                      <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">Profile Setting</a>
+                      <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">Profile Setting</a>
                     </div>
                   </div>
                 </li>
