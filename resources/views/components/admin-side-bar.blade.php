@@ -464,7 +464,13 @@
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="#">Inbox</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                  <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout
+                  </a>
+
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
                 </li>
               </div>
             </ul>
