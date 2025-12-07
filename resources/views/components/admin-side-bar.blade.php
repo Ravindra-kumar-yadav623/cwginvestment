@@ -1,10 +1,12 @@
+@props(['user'])
+
 <div class="wrapper">
   <!-- Sidebar -->
   <div class="sidebar" data-background-color="dark">
     <div class="sidebar-logo">
       <!-- Logo Header -->
       <div class="logo-header" data-background-color="dark">
-        <a href="index.html" class="logo">
+        <a href="{{route('dashboard') }}" class="logo">
           <img src="{{asset('assets/img/kaiadmin/logo_light.png')}}" alt="navbar brand" class="navbar-brand" height="40" />
         </a>
         <div class="nav-toggle">
@@ -55,7 +57,7 @@
             <div class="collapse" id="base">
               <ul class="nav nav-collapse">
                 <li>
-                  <a href="./deposit.html">
+                  <a href="{{ route('deposit.create') }}">
                     <span class="sub-item">Deposit</span>
                   </a>
                 </li>
@@ -65,7 +67,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="./deposithistory.html">
+                  <a href="{{ route('deposit.history') }}">
                     <span class="sub-item">Deposit History</span>
                   </a>
                 </li>
@@ -208,8 +210,8 @@
     <div class="main-header-logo">
       <!-- Logo Header -->
       <div class="logo-header" data-background-color="dark">
-        <a href="index.html" class="logo">
-          <img src="{{asset('assets/img/kaiadmin/logo_light.svg')}}" alt="navbar brand" class="navbar-brand" height="20" />
+        <a href="{{ route('dashboard') }}" class="logo">
+          <img src="{{asset('assets/img/kaiadmin/logo_light.png')}}" alt="navbar brand" class="navbar-brand" height="20" />
         </a>
         <div class="nav-toggle">
           <button class="btn btn-toggle toggle-sidebar">
@@ -441,7 +443,8 @@
               </div>
               <span class="profile-username">
                 <span class="op-7">Hi,</span>
-                <span class="fw-bold">Pramod Gupta</span>
+                <span class="fw-bold">{{ $user->name }}
+</span>
               </span>
             </a>
             <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -452,8 +455,8 @@
                       <img src="{{asset('assets/img/profile.jpg')}}" alt="image profile" class="avatar-img rounded" />
                     </div>
                     <div class="u-text">
-                      <h4>Pramod Gupta</h4>
-                      <p class="text-muted">pramod@gmail.com</p>
+                      <h4>{{ $user->name }}</h4>
+                      <p class="text-muted">{{ $user->email }}</p>
                       <a href="{{route('profile.edit')}}" class="btn btn-xs btn-secondary btn-sm">Profile Setting</a>
                     </div>
                   </div>

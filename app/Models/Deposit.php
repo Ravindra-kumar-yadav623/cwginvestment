@@ -7,16 +7,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Deposit extends Model
 {
-     use HasFactory;
+    use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'amount',
+        'request_for',
+        'request_wallet_address',
         'currency',
-        'payment_method',
-        'transaction_id',
+        'amount',
+        'user_crypto_address',
+        'proof_image',
         'status',
-        'note',
+        'admin_remark',
     ];
 
     public function user()

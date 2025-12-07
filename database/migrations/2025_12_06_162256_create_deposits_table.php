@@ -13,21 +13,21 @@ return new class extends Migration
     {
         Schema::create('deposits', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
-            $table->foreignId('user_id')
-                  ->constrained('users')
-                  ->onDelete('cascade');
+            $table->string('request_for');              // e.g. "Robo" or wallet label
+            $table->string('request_wallet_address');   // 0xC45f...
+            $table->string('currency')->default('USDT.BEP20');
+            $table->decimal('amount', 16, 8);           // crypto amount
+            $table->string('user_crypto_address');      // user's sending wallet
+            $table->string('proof_image')->nullable();  // file path
 
-            $table->decimal('amount', 18, 8);
-            $table->string('currency', 10)->default('INR');
-            $table->string('payment_method', 50)->nullable();
-            $table->string('transaction_id')->nullable();
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'rejected'])
+                  ->default('pending');
 
-            $table->text('note')->nullable();
+            $table->text('admin_remark')->nullable();
 
             $table->timestamps();
-
             $table->index(['user_id', 'status']);
         });
     }

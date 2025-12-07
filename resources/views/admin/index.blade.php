@@ -19,7 +19,7 @@
           <!-- END -->
         </div>
         <div class="ms-md-auto py-2 py-md-0">
-          <a href="./deposit.html" class="btn btn-primary btn-round">Deposit</a>
+          <a href="{{ route('deposit.create') }}" class="btn btn-primary btn-round">Deposit</a>
         </div>
       </div>
 

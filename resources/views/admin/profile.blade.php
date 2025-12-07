@@ -122,15 +122,17 @@ $activeTab = session('active_tab', 'profile');
                                                     <div class="row">
                                                         <div class="mb-3 col-md-6">
                                                             <label class="form-label">Country <span class="text-danger">*</span></label>
-                                                            <select name="country"
-                                                                class="form-select @error('country') is-invalid @enderror">
+                                                            <select name="country" class="form-select @error('country') is-invalid @enderror">
                                                                 <option value="">Select country--</option>
-                                                                {{-- you can move this country list to a config/array later --}}
-                                                                <option value="India" {{ old('country', $user->country) == 'India' ? 'selected' : '' }}>India</option>
-                                                                <option value="United States" {{ old('country', $user->country) == 'United States' ? 'selected' : '' }}>United States</option>
-                                                                <option value="United Kingdom" {{ old('country', $user->country) == 'United Kingdom' ? 'selected' : '' }}>United Kingdom</option>
-                                                                {{-- ... add rest of your countries here ... --}}
+
+                                                                @foreach(config('countries') as $country)
+                                                                <option value="{{ $country }}"
+                                                                    {{ old('country', $user->country) == $country ? 'selected' : '' }}>
+                                                                    {{ $country }}
+                                                                </option>
+                                                                @endforeach
                                                             </select>
+
                                                             @error('country')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -349,9 +351,9 @@ $activeTab = session('active_tab', 'profile');
                     <div class="mb-3">
                         <label class="form-label">Enter OTP *</label>
                         <input type="text"
-                               name="otp"
-                               class="form-control @error('otp') is-invalid @enderror"
-                               placeholder="6 Digit OTP">
+                            name="otp"
+                            class="form-control @error('otp') is-invalid @enderror"
+                            placeholder="6 Digit OTP">
                         @error('otp')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

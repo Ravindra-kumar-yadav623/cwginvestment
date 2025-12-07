@@ -3,8 +3,9 @@
 use App\Http\Controllers\Auth\authController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\RegisterController; 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\DepositController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -54,4 +55,8 @@ Route::middleware('auth')->group(function () {
     // OTP routes
     Route::post('/profile/otp/profile', [ProfileController::class, 'sendProfileOtp'])->name('profile.otp.profile');
     Route::post('/profile/otp/email', [ProfileController::class, 'sendEmailOtp'])->name('profile.otp.email');
+
+    Route::get('/deposit', [DepositController::class, 'create'])->name('deposit.create');
+    Route::post('/deposit', [DepositController::class, 'store'])->name('deposit.store');
+    Route::get('/deposit/history', [DepositController::class, 'history'])->name('deposit.history');
 });

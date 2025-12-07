@@ -2,7 +2,7 @@
 
  <body>
    <!--sidebar wrapper -->
-   <x-admin-side-bar></x-admin-side-bar>
+   <x-admin-side-bar :user="auth()->user()" />
    <!--end sidebar wrapper -->
 
    @yield('content')
