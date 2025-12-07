@@ -58,11 +58,30 @@ $activeTab = session('active_tab', 'profile');
                                                 {{-- Success for profile --}}
 
                                                 @if(session('success_profile'))
-                                                    <div class="alert alert-success alert-dismissible fade show auto-hide-alert" role="alert">
-                                                        {{ session('success_profile') }}
-                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                                    </div>
+                                                <div class="alert alert-success alert-dismissible fade show auto-hide-alert" role="alert">
+                                                    {{ session('success_profile') }}
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                </div>
                                                 @endif
+
+                                                @if(session('show_otp_modal'))
+                                                <script>
+                                                    document.addEventListener("DOMContentLoaded", function() {
+                                                        let otpModal = new bootstrap.Modal(document.getElementById('otpModal'));
+                                                        otpModal.show();
+                                                    });
+                                                </script>
+                                                @endif
+
+                                                @if($activeTab == 'profile' && $errors->has('otp'))
+                                                <script>
+                                                    document.addEventListener("DOMContentLoaded", function() {
+                                                        let otpModal = new bootstrap.Modal(document.getElementById('otpModal'));
+                                                        otpModal.show();
+                                                    });
+                                                </script>
+                                                @endif
+
 
                                                 {{-- Validation errors (global) --}}
                                                 @if($errors->any())
@@ -75,7 +94,7 @@ $activeTab = session('active_tab', 'profile');
                                                 </div>
                                                 @endif
 
-                                                <form action="{{ route('profile.update') }}" method="POST">
+                                                <form action="{{ route('profile.otp.profile') }}" method="POST">
                                                     @csrf
 
                                                     <div class="row">
@@ -162,23 +181,9 @@ $activeTab = session('active_tab', 'profile');
                                                                 @enderror
                                                             </div>
                                                         </div>
-
-                                                        {{-- OTP UI (not wired yet) --}}
-                                                        <div class="mb-3 col-md-6">
-                                                            <label class="form-label">
-                                                                One Time Password
-                                                            </label>
-                                                            <div class="input-group mb-3 input-primary">
-                                                                <input type="text"
-                                                                    class="form-control"
-                                                                    placeholder="Enter One Time Password"
-                                                                    disabled>
-                                                                <button type="button" class="btn btn-secondary" disabled>Send OTP</button>
-                                                            </div>
-                                                        </div>
                                                     </div>
 
-                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                    <button type="submit" class="btn btn-primary">Send OTP to Email</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -191,10 +196,10 @@ $activeTab = session('active_tab', 'profile');
                                                 <h4 class="text-primary">Update Email</h4>
 
                                                 @if(session('success_email'))
-                                                    <div class="alert alert-success alert-dismissible fade show auto-hide-alert" role="alert">
-                                                        {{ session('success_email') }}
-                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                                    </div>
+                                                <div class="alert alert-success alert-dismissible fade show auto-hide-alert" role="alert">
+                                                    {{ session('success_email') }}
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                </div>
                                                 @endif
 
                                                 <form action="{{ route('profile.email') }}" method="POST">
@@ -229,22 +234,21 @@ $activeTab = session('active_tab', 'profile');
                                                                 @enderror
                                                             </div>
                                                         </div>
-
-                                                        {{-- OTP UI placeholder --}}
-                                                        <div class="mb-3 col-md-6">
-                                                            <label class="form-label">One Time Password</label>
-                                                            <div class="input-group mb-3 input-primary">
-                                                                <input type="text"
-                                                                    class="form-control"
-                                                                    placeholder="Enter One Time Password"
-                                                                    disabled>
-                                                                <button type="button" class="btn btn-secondary" disabled>Send OTP</button>
-                                                            </div>
-                                                        </div>
                                                     </div>
 
-                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                    <!-- <button type="submit" class="btn btn-primary">Update</button> -->
                                                 </form>
+
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <form action="{{ route('profile.otp.email') }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-primary">
+                                                                Send OTP to Email
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -256,11 +260,19 @@ $activeTab = session('active_tab', 'profile');
                                                 <h4 class="text-primary">Profile Password Setting</h4>
 
                                                 @if(session('success_password'))
-                                                    <div class="alert alert-success alert-dismissible fade show auto-hide-alert" role="alert">
-                                                        {{ session('success_password') }}
-                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                                    </div>
+                                                <div class="alert alert-success alert-dismissible fade show auto-hide-alert" role="alert">
+                                                    {{ session('success_password') }}
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                </div>
                                                 @endif
+
+                                                @error('otp')
+                                                <div class="alert alert-danger alert-dismissible fade show auto-hide-alert">{{ $message }}</div>
+                                                @enderror
+
+                                                @error('otp_email')
+                                                <div class="alert alert-danger small alert-dismissible fade show auto-hide-alert">{{ $message }}</div>
+                                                @enderror
 
                                                 <form action="{{ route('profile.password') }}" method="POST">
                                                     @csrf
@@ -310,4 +322,51 @@ $activeTab = session('active_tab', 'profile');
 
     </div>
 </div>
+
+<!-- OTP Modal -->
+<!-- OTP Modal -->
+<!-- OTP Modal -->
+<div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{{ route('profile.update') }}">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="otpModalLabel">Verify OTP</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p class="text-secondary">
+                        Enter the OTP sent to email: <strong>{{ $user->email }}</strong>
+                    </p>
+
+                    {{-- new values user typed, coming from old() --}}
+                    <input type="hidden" name="name" value="{{ old('name', $user->name) }}">
+                    <input type="hidden" name="country" value="{{ old('country', $user->country) }}">
+                    <input type="hidden" name="mobile" value="{{ old('mobile', $user->mobile) }}">
+
+                    <div class="mb-3">
+                        <label class="form-label">Enter OTP *</label>
+                        <input type="text"
+                               name="otp"
+                               class="form-control @error('otp') is-invalid @enderror"
+                               placeholder="6 Digit OTP">
+                        @error('otp')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Verify & Update</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 @endsection

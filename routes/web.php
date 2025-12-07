@@ -50,4 +50,8 @@ Route::middleware('auth')->group(function () {
 
     // Change email – require transaction password
     Route::post('/profile/email', [ProfileController::class, 'updateEmail'])->name('profile.email');
+
+    // OTP routes
+    Route::post('/profile/otp/profile', [ProfileController::class, 'sendProfileOtp'])->name('profile.otp.profile');
+    Route::post('/profile/otp/email', [ProfileController::class, 'sendEmailOtp'])->name('profile.otp.email');
 });
