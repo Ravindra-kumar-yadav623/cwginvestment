@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController; 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DepositController;
+use App\Http\Controllers\Admin\AdminDepositController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -59,4 +60,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/deposit', [DepositController::class, 'create'])->name('deposit.create');
     Route::post('/deposit', [DepositController::class, 'store'])->name('deposit.store');
     Route::get('/deposit/history', [DepositController::class, 'history'])->name('deposit.history');
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.admin_dashboard');
+    })->name('admin.dashboard');
+
+    // Deposit Approval Panel
+    Route::get('/admin/deposits', [AdminDepositController::class, 'index'])->name('admin.deposits');
+    Route::post('/admin/deposits/approve/{id}', [AdminDepositController::class, 'approve'])->name('admin.deposits.approve');
+    Route::post('/admin/deposits/reject/{id}', [AdminDepositController::class, 'reject'])->name('admin.deposits.reject');
 });

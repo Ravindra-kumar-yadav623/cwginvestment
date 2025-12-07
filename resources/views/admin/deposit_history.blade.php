@@ -48,15 +48,7 @@
                                         <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>Amount (USDT)</th>
-                                        <th>Date Time</th>
-                                        <th>Deposit Address</th>
-                                        <th>Proof Image</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </tfoot>
+                                
                                 <tbody>
                                     @forelse($deposits as $deposit)
                                         <tr>

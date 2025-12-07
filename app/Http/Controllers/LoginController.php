@@ -47,6 +47,10 @@ class LoginController extends Controller
             //     ]);
             // }
 
+            if (Auth::user()->hasRole('admin')) {
+                return redirect()->route('admin.dashboard');
+            }
+
             return redirect()->route('dashboard');
         }
 
