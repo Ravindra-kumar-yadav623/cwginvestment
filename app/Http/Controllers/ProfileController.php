@@ -10,7 +10,44 @@ use App\Mail\OtpMail;
 
 class ProfileController extends Controller
 {
-   public function edit()
+    public function index()
+    {
+        $user = auth()->user();
+
+        // Wallets
+        $incomeWallet = $user->wallets()->where('type', 'commission')->value('balance') ?? 0;
+        $pocketWallet = $user->wallets()->where('type', 'main')->value('balance') ?? 0;
+
+        // Income and Withdrawals
+        $totalIncome = \App\Models\Transaction::where('user_id', $user->id)
+                        ->where('tx_type', 'credit')
+                        ->sum('amount');
+
+        $totalWithdrawal = \App\Models\Withdrawal::where('user_id', $user->id)
+                            ->where('status', 'completed')
+                            ->sum('amount');
+
+        // Business / Network Details
+        $directTeamCount = \App\Models\User::where('sponsor_id', $user->id)->count();
+        $leftRightBusiness = [
+            'left'  => rand(200, 1000), 
+            'right' => rand(200, 1000)
+        ];
+
+        $referralLink = url('/register?ref='.$user->user_code);
+
+        return view('admin.index', compact(
+            'user',
+            'incomeWallet',
+            'pocketWallet',
+            'totalIncome',
+            'totalWithdrawal',
+            'directTeamCount',
+            'leftRightBusiness',
+            'referralLink'
+        ));
+    }
+    public function edit()
     {
         $user = auth()->user();
 

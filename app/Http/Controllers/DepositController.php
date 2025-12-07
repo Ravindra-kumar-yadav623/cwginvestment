@@ -56,6 +56,12 @@ class DepositController extends Controller
             'status'               => 'pending',
         ]);
 
+        // Mark user as active after deposit request
+        if ($user->status !== 'active') {
+            $user->status = 'active';
+            $user->save();
+        }
+
         return redirect()
             ->route('deposit.create')
             ->with('success', 'Your deposit request has been submitted and is pending approval.');

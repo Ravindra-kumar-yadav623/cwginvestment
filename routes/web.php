@@ -35,9 +35,9 @@ Route::middleware('guest')->group(function () {
 // ---------- Authenticated (logged in) ----------
 Route::middleware('auth')->group(function () {
     // Dashboard
-    Route::get('/dashboard', function () {
-        return view('admin.index'); // your dashboard blade
-    })->name('dashboard');
+    Route::get('/dashboard', [ProfileController::class, 'index'])->name('dashboard');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 
     // Logout
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
