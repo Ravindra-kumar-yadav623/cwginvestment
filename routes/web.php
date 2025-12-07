@@ -17,15 +17,24 @@ Route::get('/shop',[HomeController::class, 'shop']);
 Route::get('/faq',[HomeController::class, 'faq']);
 Route::get('/contact',[HomeController::class, 'contact']);
 
-//Register User
-Route::get('login',[LoginController::class,'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login'])->name('login.post');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+// ---------- Guest (not logged in) ----------
+Route::middleware('guest')->group(function () {
+    // Login
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+    // Register
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+});
 
-// Example dashboard route (after login)
-Route::get('/dashboard', function () {
-    return view('admin.index'); // create resources/views/dashboard.blade.php
-})->middleware('auth')->name('dashboard');
+// ---------- Authenticated (logged in) ----------
+Route::middleware('auth')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('admin.index'); // your dashboard blade
+    })->name('dashboard');
+
+    // Logout
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+});

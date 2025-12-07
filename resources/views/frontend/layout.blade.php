@@ -35,10 +35,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        <a href="index.html"><img src="assets/images/logo.png" alt="logo"></a>
+                        <a href="index.html"><img src="{{asset('assets/images/logo.png')}}" alt="logo"></a>
                     </div>
                     <div class="col-sm-3 col-sm-offset-3 text-right">
-                        <span class="ion-android-cart"></span> 0 products &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url('login')}}">Login</a>
+                        <span class="ion-android-cart"></span> 0 products &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{route('login')}}">Login</a>
                         <form>
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="">
