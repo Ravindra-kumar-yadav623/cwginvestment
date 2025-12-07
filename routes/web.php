@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController; 
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\DepositController;
+use App\Http\Controllers\{DepositController, WalletTransferController, WithdrawalController};
 use App\Http\Controllers\Admin\AdminDepositController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +60,43 @@ Route::middleware('auth')->group(function () {
     Route::get('/deposit', [DepositController::class, 'create'])->name('deposit.create');
     Route::post('/deposit', [DepositController::class, 'store'])->name('deposit.store');
     Route::get('/deposit/history', [DepositController::class, 'history'])->name('deposit.history');
+
+     // Show transfer form page
+    Route::get('/wallet/transfer', [WalletTransferController::class, 'index'])
+        ->name('wallet.transfer');
+
+    Route::post('/wallet/transfer/send-otp', [WalletTransferController::class, 'sendOtp'])
+        ->name('wallet.transfer.sendOtp');
+
+    Route::post('/wallet/transfer/submit', [WalletTransferController::class, 'submit'])
+        ->name('wallet.transfer.submit');
+
+    // Transfer history
+    Route::get('/wallet/transfer/history', [WalletTransferController::class, 'history'])
+        ->name('wallet.transfer.history');
+
+    // NEW: transfer funds to another user
+    Route::get('/wallet/transfer-funds', [WalletTransferController::class, 'userTransferForm'])
+        ->name('wallet.transfer.user');
+
+    Route::post('/wallet/transfer-funds/send-otp', [WalletTransferController::class, 'sendOtpUserTransfer'])
+        ->name('wallet.transfer.user.sendOtp');
+
+    Route::post('/wallet/transfer-funds/submit', [WalletTransferController::class, 'submitUserTransfer'])
+        ->name('wallet.transfer.user.submit');
+
+    Route::get('/wallet/transfer-funds/history', [WalletTransferController::class, 'userTransferHistory'])
+        ->name('wallet.transfer.user.history');
+
+    Route::get('/wallet/received-funds/history', [WalletTransferController::class, 'receivedTransferHistory'])
+        ->name('wallet.transfer.received.history');
+
+    Route::get('/withdrawal', [WithdrawalController::class, 'create'])->name('withdrawal');
+    Route::post('/withdrawal/send-otp', [WithdrawalController::class, 'sendOtp'])->name('withdrawal.sendOtp');
+    Route::post('/withdrawal/submit', [WithdrawalController::class, 'store'])->name('withdrawal.submit');
+
+    Route::get('/withdrawal-history', [WithdrawalController::class, 'history'])
+        ->name('withdrawal.history');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
