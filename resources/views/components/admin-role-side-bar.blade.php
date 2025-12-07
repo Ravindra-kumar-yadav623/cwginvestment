@@ -84,7 +84,7 @@
                 </li>
           </li>
           <li>
-            <a href="./receivehistory.html">
+            <a href="{{ route('admin.withdrawals.index') }}">
               <span class="sub-item">Withdraw Management</span>
             </a>
           </li>

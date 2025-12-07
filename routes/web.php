@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\{DepositController, WalletTransferController, WithdrawalController};
 use App\Http\Controllers\Admin\AdminDepositController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\WithdrawalController as AdminWithdrawalController;
 
 // Route::get('/', function () {
 //     return view('frontend/layout');
@@ -108,4 +109,18 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/deposits', [AdminDepositController::class, 'index'])->name('admin.deposits');
     Route::post('/admin/deposits/approve/{id}', [AdminDepositController::class, 'approve'])->name('admin.deposits.approve');
     Route::post('/admin/deposits/reject/{id}', [AdminDepositController::class, 'reject'])->name('admin.deposits.reject');
+});
+
+Route::prefix('admin')
+    ->middleware(['auth', 'admin']) // add your admin middleware here e.g. 'admin'
+    ->group(function () {
+
+        Route::get('/withdrawals', [AdminWithdrawalController::class, 'index'])
+            ->name('admin.withdrawals.index');
+
+        Route::post('/withdrawals/approve/{withdrawal}', [AdminWithdrawalController::class, 'approve'])
+            ->name('admin.withdrawals.approve');
+
+        Route::post('/withdrawals/reject/{withdrawal}', [AdminWithdrawalController::class, 'reject'])
+            ->name('admin.withdrawals.reject');
 });

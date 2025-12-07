@@ -62,7 +62,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="./withdraw.html">
+                  <a href="{{ route('withdrawal') }}">
                     <span class="sub-item">Withdraw</span>
                   </a>
                 </li>
@@ -72,7 +72,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="./withdrawhistory.html">
+                  <a href="{{ route('withdrawal.history') }}">
                     <span class="sub-item">Withdraw History</span>
                   </a>
                 </li>

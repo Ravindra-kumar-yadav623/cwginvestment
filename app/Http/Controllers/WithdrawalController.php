@@ -131,7 +131,7 @@ class WithdrawalController extends Controller
                 'user_id' => $user->id,
                 'amount' => $data['amount'],
                 'currency' => 'USDT',
-                'payout_method' => 'USDT(BEP20)',
+                'payout_method' => $data['withdraw_from'],
                 'payout_details' => [
                     'wallet_address' => $user->crypto_address ?? 'Not set',
                 ],
@@ -161,7 +161,7 @@ class WithdrawalController extends Controller
             session()->forget('withdraw_data');
             $otp->delete();
 
-            return redirect()->route('withdraw.history')->with('success', 'Withdrawal request submitted!');
+            return redirect()->route('withdrawal.history')->with('success', 'Withdrawal request submitted!');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Error submitting request!');

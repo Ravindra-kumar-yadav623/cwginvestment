@@ -177,6 +177,7 @@ class WalletTransferController extends Controller
             // credit to investment
             $beforeInv = $toWallet->balance;
             $afterInv  = $beforeInv + $amount;
+            $toWallet->balance = $afterInv;
 
             Transaction::create([
                 'user_id'      => $user->id,
