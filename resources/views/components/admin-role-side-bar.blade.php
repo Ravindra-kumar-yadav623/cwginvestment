@@ -42,12 +42,14 @@
               </ul>
             </div>
           </li>
+
           <li class="nav-section">
             <span class="sidebar-mini-icon">
               <i class="fa fa-ellipsis-h"></i>
             </span>
             <h4 class="text-section">Components</h4>
           </li>
+
           <li class="nav-item">
             <a data-bs-toggle="collapse" href="#base">
               <i class="fas fa-layer-group"></i>
@@ -69,6 +71,7 @@
               </ul>
             </div>
           </li>
+
           <li class="nav-item">
             <a data-bs-toggle="collapse" href="#forms">
               <i class="fas fa-pen-square"></i>
@@ -82,19 +85,48 @@
                     <span class="sub-item">Deposit Management</span>
                   </a>
                 </li>
+                <li>
+                  <a href="{{ route('admin.withdrawals.index') }}">
+                    <span class="sub-item">Withdraw Management</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </li>
-          <li>
-            <a href="{{ route('admin.withdrawals.index') }}">
-              <span class="sub-item">Withdraw Management</span>
+
+          <li class="nav-item">
+            <a data-bs-toggle="collapse" href="#transfer">
+              <i class="fas fa-pen-square"></i>
+              <p>Transfer</p>
+              <span class="caret"></span>
             </a>
+            <div class="collapse" id="transfer">
+              <ul class="nav nav-collapse">
+                <li>
+                  <a href="{{ route('wallet.transfer.user') }}">
+                    <span class="sub-item">Transfer to Funds</span>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="{{ route('wallet.transfer.received.history') }}">
+                    <span class="sub-item">Receive History</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{{ route('wallet.transfer.user.history') }}">
+                    <span class="sub-item">Transfer History</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </li>
+
         </ul>
       </div>
-      </li>
-      </ul>
+
     </div>
   </div>
-</div>
 <!-- End Sidebar -->
 <div class="main-panel">
   <div class="main-header">

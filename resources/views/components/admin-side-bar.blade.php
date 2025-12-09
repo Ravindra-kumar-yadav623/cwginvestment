@@ -141,23 +141,24 @@
             <div class="collapse" id="tables">
               <ul class="nav nav-collapse">
                 <li>
-                  <a href="./directteam.html">
+                  <a href="#">
                     <span class="sub-item">Direct Team</span>
                   </a>
                 </li>
                 <li>
-                  <a href="./allteam.html">
+                  <a href="#">
                     <span class="sub-item">All Team</span>
                   </a>
                 </li>
                 <li>
-                  <a href="./businesshistory.html">
+                  <a href="#">
                     <span class="sub-item">Business History</span>
                   </a>
                 </li>
               </ul>
             </div>
           </li>
+
           <li class="nav-item">
             <a data-bs-toggle="collapse" href="#maps">
               <i class="fas fa-map-marker-alt"></i>
@@ -167,13 +168,14 @@
             <div class="collapse" id="maps">
               <ul class="nav nav-collapse">
                 <li>
-                  <a href="./rankreward.html">
+                  <a href="#">
                     <span class="sub-item">Rank & Reward</span>
                   </a>
                 </li>
               </ul>
             </div>
           </li>
+
           <li class="nav-item">
             <a data-bs-toggle="collapse" href="#submenu">
               <i class="fas fa-bars"></i>
@@ -182,39 +184,30 @@
             </a>
             <div class="collapse" id="submenu">
               <ul class="nav nav-collapse">
-                <li>
-                  <a data-bs-toggle="collapse" href="#subnav1">
-                    <span class="sub-item">Income</span>
-                    <span class="caret"></span>
-                  </a>
-                  <div class="collapse" id="subnav1">
-                    <ul class="nav nav-collapse subnav">
                       <li>
-                        <a href="./sponsor-income.html">
+                        <a href="#">
                           <span class="sub-item">Sponsor Income</span>
                         </a>
                       </li>
                       <li>
-                        <a href="./cwg-profit-income.html">
+                        <a href="#">
                           <span class="sub-item">CWG Profit Income</span>
                         </a>
                       </li>
                       <li>
-                        <a href="./cwg-level-income.html">
+                        <a href="#">
                           <span class="sub-item">CWG Level Income</span>
                         </a>
                       </li>
                       <li>
-                        <a href="./reward-income.html">
+                        <a href="#">
                           <span class="sub-item">Reward Income</span>
                         </a>
                       </li>
-                    </ul>
-                  </div>
-                </li>
               </ul>
             </div>
           </li>
+          
         </ul>
       </div>
     </div>

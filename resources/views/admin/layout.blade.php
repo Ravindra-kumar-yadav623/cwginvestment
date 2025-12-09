@@ -1,9 +1,16 @@
  <x-admin-header-css></x-admin-header-css>
 
  <body>
-   <!--sidebar wrapper -->
-   <x-admin-side-bar :user="auth()->user()" />
-   <!--end sidebar wrapper -->
+    @php 
+        $user = auth()->user();
+        $isAdmin = Auth::user()->hasRole('admin');
+    @endphp
+   
+    @if($isAdmin)
+        <x-admin-role-side-bar :user="auth()->user()" />
+    @else
+        <x-admin-side-bar :user="auth()->user()" />
+    @endif
 
    @yield('content')
 

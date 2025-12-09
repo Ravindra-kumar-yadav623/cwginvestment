@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\withdrawalMail;
 
 class WithdrawalController extends Controller
 {
@@ -84,9 +85,8 @@ class WithdrawalController extends Controller
             'expires_at' => now()->addMinutes(5),
         ]);
 
-        \Mail::raw("Your CWG withdrawal OTP is: $otpCode", function ($msg) use ($user) {
-            $msg->to($user->email)->subject('Withdrawal OTP');
-        });
+          // send mail
+        Mail::to($user->email)->queue(new withdrawalMail($otpCode, false));
 
         return back()
             ->with('success', 'OTP sent to your email!')

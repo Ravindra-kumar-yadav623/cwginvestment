@@ -1,10 +1,13 @@
- <x-admin-header-css></x-admin-header-css>
+<x-admin-header-css></x-admin-header-css>
 
- <body>
-   <!--sidebar wrapper -->
-   <x-admin-role-side-bar :user="auth()->user()" />
-   <!--end sidebar wrapper -->
+<body>
+    @php 
+        $user = auth()->user(); 
+    @endphp
 
+    <x-admin-role-side-bar :user="$user" />
+          
+    
    @yield('content')
 
    <x-admin-footer-css></x-admin-footer-css>
