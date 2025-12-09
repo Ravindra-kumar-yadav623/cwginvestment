@@ -55,7 +55,8 @@
                         <div class="mb-3">
                             <label class="form-label">Email <span class="text-danger">*</span></label>
                             <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                                   value="{{ old('email') }}" required>
+								oninput="this.value=this.value.toLowerCase()"       
+								value="{{ old('email') }}" required>
                             @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -65,27 +66,43 @@
                         <div class="mb-3">
                             <label class="form-label">Mobile Number <span class="text-danger">*</span></label>
                             <input type="text" name="mobile" class="form-control @error('mobile') is-invalid @enderror"
-                                   value="{{ old('mobile') }}" required>
+                                   value="{{ old('mobile') }}" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
                             @error('mobile')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        {{-- Country --}}
-                        <div class="mb-3">
-                            <label class="form-label">Country <span class="text-danger">*</span></label>
-                            <input type="text" name="country" class="form-control @error('country') is-invalid @enderror"
-                                   value="{{ old('country', 'India') }}" required>
-                            @error('country')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+						{{-- Country --}}
+						<div class="mb-3">
+							<label class="form-label">Country <span class="text-danger">*</span></label>
+
+							<select name="country"
+									class="form-control @error('country') is-invalid @enderror"
+									required>
+
+								<option value="">Select Country</option>
+
+								@foreach(config('countries') as $country)
+									<option value="{{ $country }}"
+										{{ old('country', 'India') == $country ? 'selected' : '' }}>
+										{{ $country }}
+									</option>
+								@endforeach
+
+							</select>
+
+							@error('country')
+								<div class="invalid-feedback">{{ $message }}</div>
+							@enderror
+						</div>
 
                         {{-- Username --}}
                         <div class="mb-3">
                             <label class="form-label">Username (for login) <span class="text-danger">*</span></label>
                             <input type="text" name="username" class="form-control @error('username') is-invalid @enderror"
-                                   value="{{ old('username') }}" required>
+                                   value="{{ old('username') }}" 
+								    oninput="this.value=this.value.toLowerCase()"
+       								minlength="4" maxlength="20" required>
                             @error('username')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -112,6 +129,9 @@
                         <div class="mb-3">
                             <label class="form-label">Transaction Password <span class="text-danger">*</span></label>
                             <input type="password" name="transaction_password"
+ 									minlength="6" maxlength="6"
+									pattern="[0-9]*"
+									inputmode="numeric"
                                    class="form-control @error('transaction_password') is-invalid @enderror"
                                    required>
                             @error('transaction_password')
@@ -122,7 +142,10 @@
                         {{-- Confirm Transaction Password --}}
                         <div class="mb-3">
                             <label class="form-label">Confirm Transaction Password <span class="text-danger">*</span></label>
-                            <input type="password" name="transaction_password_confirmation" class="form-control" required>
+                            <input type="password" name="transaction_password_confirmation" class="form-control" 
+								minlength="6" maxlength="6"
+								pattern="[0-9]*"
+								inputmode="numeric" required>
                         </div>
 
                         {{-- Sponsor Code --}}
@@ -131,6 +154,7 @@
                                 Sponsor Code (Referral)
                             </label>
                             <input type="text" name="sponsor_code"
+									oninput="this.value=this.value.toUpperCase()"
                                    class="form-control @error('sponsor_code') is-invalid @enderror"
                                    value="{{ request('ref', old('sponsor_code')) }}" required>
                             @error('sponsor_code')

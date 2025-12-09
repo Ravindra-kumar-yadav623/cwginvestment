@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController; 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\{DepositController, WalletTransferController, WithdrawalController, TeamController};
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminDepositController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\WithdrawalController as AdminWithdrawalController;
@@ -105,9 +106,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.admin_dashboard');
-    })->name('admin.dashboard');
+    // Route::get('/admin/dashboard', function () {
+    //     return view('admin.admin_dashboard');
+    // })->name('admin.dashboard');
+
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
+    Route::get('/admin/users', [AdminDashboardController::class, 'userList'])
+        ->name('admin.users.index');
 
     // Deposit Approval Panel
     Route::get('/admin/deposits', [AdminDepositController::class, 'index'])->name('admin.deposits');

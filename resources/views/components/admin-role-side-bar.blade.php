@@ -64,7 +64,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="./withdraw.html">
+                  <a href="{{ route('admin.users.index') }}">
                     <span class="sub-item">User Management</span>
                   </a>
                 </li>
