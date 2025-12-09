@@ -36,17 +36,14 @@ class OtpMail extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
+     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.otp',  
+            with: [
+                'code' => $this->code, 
+            ],
         );
-    }
-
-    public function build()
-    {
-        return $this->subject('Your OTP Code - Capital Wealth Growth')
-                    ->view('emails.otp');
     }
 
     /**
@@ -54,8 +51,28 @@ class OtpMail extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
+
+
     public function attachments(): array
     {
         return [];
     }
+
+
+
+    // public function build()
+    // {
+    //     return $this->subject('Your OTP Code - Capital Wealth Growth')
+    //                 ->view('emails.otp');
+    // }
+
+    /**
+     * Get the attachments for the message.
+     *
+    //  * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+    //  */
+    // public function attachments(): array
+    // {
+    //     return [];
+    // }
 }

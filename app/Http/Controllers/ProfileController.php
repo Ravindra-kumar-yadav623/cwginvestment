@@ -215,7 +215,7 @@ class ProfileController extends Controller
             'expires_at' => now()->addMinutes(10),
         ]);
 
-        Mail::to($user->email)->queue(new OtpMail($code));
+   Mail::to($user->email)->queue(new OtpMail($code));
 
         return back()
             ->with('active_tab', 'email')
