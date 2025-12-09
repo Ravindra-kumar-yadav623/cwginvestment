@@ -415,12 +415,13 @@ class WalletTransferController extends Controller
             // credit receiver
             $beforeTo = $toWallet->balance;
             $afterTo  = $beforeTo + $amount;
+            $toWallet->balance = $afterTo;
 
             Transaction::create([
                 'user_id'      => $toWallet->user_id,
                 'wallet_id'    => $toWallet->id,
                 'tx_type'      => 'credit',
-                'source_type'  => 'admin_adjustment',
+                'source_type'  => 'investment',
                 'source_id'    => null,
                 'amount'       => $amount,
                 'balance_before' => $beforeTo,
@@ -433,6 +434,7 @@ class WalletTransferController extends Controller
 
             // consume OTP & clear session
             $otp->delete();
+            $toWallet->save();
             session()->forget('pending_user_transfer');
 
             DB::commit();

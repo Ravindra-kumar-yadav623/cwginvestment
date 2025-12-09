@@ -24,7 +24,7 @@ class RegisterController extends Controller
         // 1. Validate input
         $request->validate([
             'name'                  => 'required|string|max:255',
-            'email'                 => 'nullable|email|max:255|unique:users,email',
+            'email'                 => 'required|email|max:255|unique:users,email',
             'mobile'                => 'required|string|max:20|unique:users,mobile',
             'country'               => 'required|string|max:100',
             'username'              => 'required|string|max:50|alpha_num|unique:users,username',
@@ -32,8 +32,8 @@ class RegisterController extends Controller
             'password'              => 'required|string|min:6|confirmed',
             'transaction_password'  => 'required|string|min:4|confirmed',
 
-            'sponsor_code'          => 'nullable|string|exists:users,user_code',
-            'position'              => 'nullable|in:left,right',
+            'sponsor_code'          => 'required|string|exists:users,user_code',
+            'position'              => 'required|in:left,right',
             'mt5_account_no'        => 'nullable|string|max:100|unique:users,mt5_account_no',
         ], [
             'sponsor_code.exists'   => 'Sponsor code not found.',

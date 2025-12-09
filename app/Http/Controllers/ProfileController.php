@@ -7,6 +7,7 @@ use App\Models\Otp;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OtpMail;
+use App\Models\{Wallet, Transaction, Withdrawal, User, UserNetwork};
 
 class ProfileController extends Controller
 {
@@ -14,37 +15,132 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
 
-        // Wallets
-        $incomeWallet = $user->wallets()->where('type', 'commission')->value('balance') ?? 0;
-        $pocketWallet = $user->wallets()->where('type', 'main')->value('balance') ?? 0;
+        // Wallet balances
+        $incomeWallet  = Wallet::where('user_id', $user->id)
+            ->where('type', 'commission')   // Income wallet
+            ->value('balance') ?? 0;
 
-        // Income and Withdrawals
-        $totalIncome = \App\Models\Transaction::where('user_id', $user->id)
-                        ->where('tx_type', 'credit')
-                        ->sum('amount');
+        $pocketWallet  = Wallet::where('user_id', $user->id)
+            ->where('type', 'main')         // Pocket/Main wallet
+            ->value('balance') ?? 0;
 
-        $totalWithdrawal = \App\Models\Withdrawal::where('user_id', $user->id)
-                            ->where('status', 'completed')
-                            ->sum('amount');
+        // 🔹 CWG Investment = Investment wallet balance
+        $cwgInvestment = Wallet::where('user_id', $user->id)
+            ->where('type', 'investment')
+            ->value('balance') ?? 0;
 
-        // Business / Network Details
-        $directTeamCount = \App\Models\User::where('sponsor_id', $user->id)->count();
-        $leftRightBusiness = [
-            'left'  => rand(200, 1000), 
-            'right' => rand(200, 1000)
+        // Total income (all credits)
+        $totalIncome = Transaction::where('user_id', $user->id)
+            ->where('tx_type', 'credit')
+            ->sum('amount');
+
+        // Total completed withdrawals
+        $totalWithdrawal = Withdrawal::where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->sum('amount');
+
+        // Direct team count
+        $directTeamCount = User::where('sponsor_id', $user->id)->count();
+
+        // 🔹 Left/Right business = sum of investment wallet balances of downline
+        $leftUserIds = UserNetwork::where('upline_id', $user->id)
+            ->where('position', 'left')
+            ->pluck('user_id');
+
+        $rightUserIds = UserNetwork::where('upline_id', $user->id)
+            ->where('position', 'right')
+            ->pluck('user_id');
+
+        $leftBusiness = Wallet::whereIn('user_id', $leftUserIds)
+            ->where('type', 'investment')
+            ->sum('balance');
+
+        $rightBusiness = Wallet::whereIn('user_id', $rightUserIds)
+            ->where('type', 'investment')
+            ->sum('balance');
+
+        // Matching business = both sides matched volume
+        $matchingBusiness = min($leftBusiness, $rightBusiness);
+
+        // Rank rules (you can tweak amounts as needed)
+        $rankRules = [
+            ['name' => 'Royal Star',        'threshold' => 1000000],
+            ['name' => 'Blue Star',         'threshold' => 900000],
+            ['name' => 'Super Diamond Star','threshold' => 50000],
+            ['name' => 'Diamond Star',      'threshold' => 20000],
+            ['name' => 'Super Golden Star', 'threshold' => 15000],
+            ['name' => 'Golden Star',       'threshold' => 10000],
+            ['name' => 'Silver Star',       'threshold' => 5000],
         ];
 
+        $currentRank = null;
+
+        foreach ($rankRules as $rule) {
+            if ($matchingBusiness >= $rule['threshold']) {
+                $currentRank = $rule['name'];
+                break; // take highest rank first (because array is sorted desc)
+            }
+        }
+
+        // Refer & Earn stats (last 6 months direct signups)
+        $startDate = now()->subMonths(5)->startOfMonth();
+
+        $referralStats = User::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as ym, COUNT(*) as total')
+            ->where('sponsor_id', $user->id)
+            ->where('created_at', '>=', $startDate)
+            ->groupBy('ym')
+            ->orderBy('ym')
+            ->get();
+
+        $referChartLabels = [];
+        $referChartCounts = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $dt    = now()->subMonths($i);
+            $ym    = $dt->format('Y-m');
+            $label = $dt->format('M Y');
+
+            $row = $referralStats->firstWhere('ym', $ym);
+
+            $referChartLabels[] = $label;
+            $referChartCounts[] = $row ? $row->total : 0;
+        }
+
+        // Network tree – immediate downline under this user
+        $leftDownline = UserNetwork::with('user')
+            ->where('upline_id', $user->id)
+            ->where('position', 'left')
+            ->orderBy('level')
+            ->limit(5)
+            ->get();
+
+        $rightDownline = UserNetwork::with('user')
+            ->where('upline_id', $user->id)
+            ->where('position', 'right')
+            ->orderBy('level')
+            ->limit(5)
+            ->get();
+
+        // Referral link
         $referralLink = url('/register?ref='.$user->user_code);
 
         return view('admin.index', compact(
             'user',
             'incomeWallet',
             'pocketWallet',
+            'cwgInvestment',
             'totalIncome',
             'totalWithdrawal',
             'directTeamCount',
-            'leftRightBusiness',
-            'referralLink'
+            'leftBusiness',
+            'rightBusiness',
+            'referChartLabels',
+            'referChartCounts',
+            'leftDownline',
+            'rightDownline',
+            'referralLink',
+            'currentRank',    
+            'matchingBusiness'
         ));
     }
     public function edit()
