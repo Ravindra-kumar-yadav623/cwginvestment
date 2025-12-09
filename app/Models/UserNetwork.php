@@ -34,4 +34,5 @@ class UserNetwork extends Model
     {
         return $this->belongsTo(User::class, 'upline_id');
     }
+
 }

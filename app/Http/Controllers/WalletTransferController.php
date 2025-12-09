@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Services\SponsorIncomeService;
 
 class WalletTransferController extends Controller
 {
@@ -193,6 +194,9 @@ class WalletTransferController extends Controller
                 'remark'       => 'Pocket → Investment transfer',
                 'transaction_password_verified_at' => now(),
             ]);
+
+            // distribute sponsor income
+            SponsorIncomeService::distribute($user, $amount, $refNo);
 
             // consume OTP + clear session
             $otp->delete();

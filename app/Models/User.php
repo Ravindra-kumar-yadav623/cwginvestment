@@ -96,6 +96,11 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'sponsor_id');
     }
 
+    public function sponsoredUsers()
+    {
+        return $this->hasMany(User::class, 'sponsor_id');
+    }
+
     // User's placement / binary tree info
     public function network()
     {

@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController; 
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\{DepositController, WalletTransferController, WithdrawalController};
+use App\Http\Controllers\{DepositController, WalletTransferController, WithdrawalController, TeamController};
 use App\Http\Controllers\Admin\AdminDepositController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\WithdrawalController as AdminWithdrawalController;
@@ -98,6 +98,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/withdrawal-history', [WithdrawalController::class, 'history'])
         ->name('withdrawal.history');
+
+    Route::get('/team/direct', [TeamController::class, 'direct'])->name('team.direct');
+    Route::get('/team/all',    [TeamController::class, 'all'])->name('team.all');
+    Route::get('/team/business-history', [TeamController::class, 'businessHistory'])->name('team.business_history');
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {

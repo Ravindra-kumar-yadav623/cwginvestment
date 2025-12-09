@@ -40,9 +40,15 @@ class Transaction extends Model
     }
 
 
-     public function investment()
+    public function investment()
     {
         // Only valid if source_type = 'investment'
         return $this->belongsTo(UserInvestment::class, 'source_id');
+    }
+
+    public function fromUser()
+    {
+        // source_id = the investor who generated this commission
+        return $this->belongsTo(User::class, 'source_id');
     }
 }

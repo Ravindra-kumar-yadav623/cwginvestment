@@ -141,17 +141,17 @@
             <div class="collapse" id="tables">
               <ul class="nav nav-collapse">
                 <li>
-                  <a href="#">
+                  <a href="{{ route('team.direct') }}">
                     <span class="sub-item">Direct Team</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#">
+                  <a href="{{ route('team.all') }}">
                     <span class="sub-item">All Team</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#">
+                  <a href="{{ route('team.business_history') }}">
                     <span class="sub-item">Business History</span>
                   </a>
                 </li>
